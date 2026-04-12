@@ -1,0 +1,172 @@
+# Core
+Pillow>=10.0.0
+opencv-python>=4.8.0
+numpy>=1.24.0
+
+# Video Processing
+moviepy>=1.0.3
+ffmpeg-python>=0.2.0
+imageio[ffmpeg]>=2.31.0
+
+# Audio Processing
+pydub>=0.25.1
+librosa>=0.10.0
+soundfile>=0.12.1
+
+# AI / ML
+openai-whisper>=20231117
+torch>=2.0.0
+torchvision>=0.15.0
+transformers>=4.30.0
+ultralytics>=8.0.0
+rembg>=2.0.50
+onnxruntime>=1.16.0
+
+# OCR
+pytesseract>=0.3.10
+easyocr>=1.7.0
+
+# API
+fastapi>=0.100.0
+uvicorn>=0.23.0
+python-multipart>=0.0.6
+
+# CLI
+click>=8.1.0
+rich>=13.0.0
+tqdm>=4.65.0
+
+# Utils
+python-dotenv>=1.0.0
+pydantic>=2.0.0
+pydantic-settings>=2.0.0
+loguru>=0.7.0
+aiofiles>=23.1.0
+httpx>=0.24.0
+pyyaml>=6.0
+
+# Image Metadata
+Wand>=0.6.11
+exifread>=3.0.0
+piexif>=1.1.3
+
+# Screen Recording
+mss>=9.0.0
+
+# Testing
+pytest>=7.4.0
+pytest-asyncio>=0.21.0
+pytest-cov>=4.1.0
+
+# ============================================================================
+# WHAT EACH AI MODEL DOES
+# ============================================================================
+#
+#   Model/Tool        | What it does                    | Example use case
+#   -------------------+---------------------------------+-----------------------------
+#   Whisper            | Speech-to-text (audio only)     | Generate subtitles from video
+#                      |                                 | Transcribe a podcast
+#   YOLOv8 (YOLO)      | Object detection in images      | Count people/cars in a photo
+#                      |                                 | Detect objects in video frames
+#   OpenCV Haar/DNN    | Face detection                  | Find faces, blur them for privacy
+#                      |                                 | Crop individual faces from photo
+#   rembg (U2Net)      | Background removal              | Remove background from portrait
+#                      |                                 | Replace bg with another image
+#   EasyOCR            | Read text from images (AI-based)| Read a sign, license plate
+#   Tesseract OCR      | Read text from images (classic) | Scan a document to text
+#   FFmpeg             | Video/audio processing (NOT AI) | Convert, cut, merge, compress
+#                      |                                 | Extract audio, change resolution
+#
+#   Whisper alone is NOT enough. Each feature uses a different model.
+#   FFmpeg is required for ALL video/audio operations (format conversion etc.)
+#
+# ============================================================================
+# INSTALLATION STEPS (run in order, everything will be offline-ready)
+# ============================================================================
+#
+# STEP 1 — Create virtual environment:
+#    python -m venv venv
+#    venv\Scripts\activate              (Windows PowerShell)
+#    source venv/bin/activate           (Linux/Mac)
+#
+# STEP 2 — Install PyTorch (the AI engine, pick ONE):
+#    CPU only (~700 MB):
+#      pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
+#
+#    NVIDIA GPU with CUDA (~2.5 GB, much faster AI):
+#      pip install torch torchvision --index-url https://download.pytorch.org/whl/cu121
+#
+# STEP 3 — Install all Python packages:
+#    pip install -r requirements.txt
+#
+# STEP 4 — Install FFmpeg (REQUIRED for video/audio):
+#    Windows:  winget install FFmpeg
+#              or download from https://www.gyan.dev/ffmpeg/builds/
+#              extract, add bin/ folder to system PATH
+#    Linux:    sudo apt install ffmpeg
+#    Mac:      brew install ffmpeg
+#    Verify:   ffmpeg -version
+#
+# STEP 5 — Install Tesseract OCR (for reading text from images):
+#    Windows:  download from https://github.com/UB-Mannheim/tesseract/wiki
+#              install, add to PATH (e.g. C:\Program Files\Tesseract-OCR)
+#    Linux:    sudo apt install tesseract-ocr tesseract-ocr-eng
+#    Mac:      brew install tesseract
+#    Verify:   tesseract --version
+#
+# STEP 6 — PRE-DOWNLOAD ALL AI MODELS (so everything works offline):
+#
+#    Run these commands one by one after activating your venv:
+#
+#    6a. Whisper model — speech to text (~142 MB):
+#        python -c "import whisper; whisper.load_model('base')"
+#
+#    6b. YOLOv8 model — object detection (~6 MB):
+#        python -c "from ultralytics import YOLO; YOLO('yolov8n.pt')"
+#
+#    6c. U2Net model — background removal (~176 MB):
+#        python -c "from rembg import new_session; new_session('u2net')"
+#
+#    6d. EasyOCR models — text recognition (~200 MB):
+#        python -c "import easyocr; easyocr.Reader(['en'])"
+#
+#    6e. OpenCV face detection — already built-in, no download needed.
+#
+#    Total download: ~524 MB for all AI models
+#
+# STEP 7 — Copy environment config:
+#    copy .env.example .env             (Windows)
+#    cp .env.example .env               (Linux/Mac)
+#
+# STEP 8 — Verify everything is installed:
+#    python -c "from mediaforge.utils.dependency_checker import print_dependency_report; print_dependency_report()"
+#
+# STEP 9 — Run:
+#    API server:  python run_api.py        (opens at http://localhost:8000/docs)
+#    CLI:         python -m mediaforge --help
+#    Tests:       pytest tests/ -v
+#
+# ============================================================================
+# TOTAL DISK SPACE SUMMARY
+# ============================================================================
+#
+#   Component              | Size
+#   ------------------------+----------
+#   Python packages (pip)  | ~1.5 GB
+#   Whisper base model     | ~142 MB
+#   YOLOv8n model          | ~6 MB
+#   U2Net (rembg)          | ~176 MB
+#   EasyOCR models         | ~200 MB
+#   FFmpeg                 | ~100 MB
+#   Tesseract OCR          | ~50 MB
+#   ------------------------+----------
+#   TOTAL                  | ~2.2 GB
+#
+#   Larger Whisper models (optional, for better accuracy):
+#     tiny   : ~39 MB   — fast, lower accuracy
+#     base   : ~142 MB  — good balance (default)
+#     small  : ~466 MB  — better accuracy
+#     medium : ~1.5 GB  — high accuracy
+#     large  : ~2.9 GB  — best accuracy, slowest
+#
+# ============================================================================

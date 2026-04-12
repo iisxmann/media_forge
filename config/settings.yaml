@@ -1,0 +1,98 @@
+app:
+  name: MediaForge
+  version: 1.0.0
+  debug: false
+
+paths:
+  output: ./output
+  temp: ./temp
+  cache: ./cache
+  logs: ./logs
+  models: ./models
+
+image:
+  default_quality: 95
+  default_format: png
+  max_resolution: 8192
+  thumbnail_size: [256, 256]
+  supported_formats:
+    - jpg
+    - jpeg
+    - png
+    - bmp
+    - gif
+    - tiff
+    - webp
+    - svg
+    - ico
+    - heic
+
+video:
+  default_codec: libx264
+  default_audio_codec: aac
+  default_format: mp4
+  default_fps: 30
+  default_bitrate: "5000k"
+  max_resolution: 7680  # 8K
+  supported_formats:
+    - mp4
+    - avi
+    - mkv
+    - mov
+    - wmv
+    - flv
+    - webm
+    - m4v
+    - mpeg
+    - 3gp
+
+audio:
+  default_format: mp3
+  default_bitrate: "192k"
+  default_sample_rate: 44100
+  supported_formats:
+    - mp3
+    - wav
+    - ogg
+    - flac
+    - aac
+    - wma
+    - m4a
+
+ai:
+  whisper:
+    model_size: base  # tiny, base, small, medium, large
+    language: tr
+    device: auto  # auto, cpu, cuda
+  face_detection:
+    confidence_threshold: 0.5
+    model: haar  # haar, dnn, mediapipe
+  object_detection:
+    model: yolov8n
+    confidence_threshold: 0.25
+  super_resolution:
+    scale_factor: 4
+    model: EDSR
+
+watermark:
+  default_opacity: 0.5
+  default_position: bottom-right
+  default_margin: 10
+  font_size: 24
+
+batch:
+  max_workers: 4
+  chunk_size: 10
+
+api:
+  host: 0.0.0.0
+  port: 8000
+  max_upload_size_mb: 500
+  cors_origins:
+    - "*"
+
+logging:
+  level: INFO
+  format: "{time:YYYY-MM-DD HH:mm:ss} | {level} | {module}:{function}:{line} | {message}"
+  rotation: "10 MB"
+  retention: "30 days"
