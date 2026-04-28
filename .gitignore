@@ -30,7 +30,6 @@ desktop.ini
 
 # Project
 logs/
-output/
 temp/
 cache/
 *.log
